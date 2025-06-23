@@ -5,17 +5,21 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Configuración de CORS (¡Añade esto!)
+  // Enhanced CORS configuration
   app.enableCors({
     origin: [
-      'https://alvarweb.vercel.app/', // Reemplaza con tu dominio en producción
-      'http://localhost:3000', // Para desarrollo local
+      'https://alvarweb.vercel.app', // Removed trailing slash
+      'http://localhost:3000',
+      // Add any other domains you need here
     ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization,Accept',
-    credentials: true, // Habilita si usas cookies/tokens de autenticación
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    credentials: true,
+    // Optional: Set how long the CORS preflight response can be cached
+    maxAge: 86400, // 24 hours
   });
 
+  // Rest of your configuration...
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -30,4 +34,3 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
