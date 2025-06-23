@@ -22,7 +22,8 @@ export class ProjectsController {
 
   @Get()
   async findAll() {
-    return this.projectsService.findAll();
+    const projects = await this.projectsService.findAll();
+    return projects || []; // ← ¡Forza a retornar array vacío si es undefined!
   }
 
   @Get(':id')
